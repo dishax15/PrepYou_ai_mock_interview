@@ -6,7 +6,8 @@ import { Button } from './ui/button';
 import Link from 'next/link';
 import DisplayTechIcons from './DisplayTechIcons';
 
-const InterviewCard = ({interviewId,
+const InterviewCard = ({
+  id,
   userId,
   role,
   type,
@@ -21,15 +22,18 @@ const InterviewCard = ({interviewId,
 
   return (
     <div className='card-border w-[360] max-sm:w-full 
-     min-h-90'>
+     min-h-96'>
         <div className='card-interview'>
             <div>
+                {/* Type Badge */}
                 <div className='absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg bg-light-400'>
                     <p className='badge-text'>{normalizedType}</p>
                 </div>
 
-                <Image src={getRandomInterviewCover()} alt="cover image" width={90} height={90} className='rounded-full object-fit size-[90]'/>
+        {/* Cover Image */}
+                <Image src={getRandomInterviewCover()} alt="cover image" width={90} height={90} className='rounded-full object-fit size-[90px]'/>
 
+        {/* Interview Role */}
                 <h3 className='mt-5 capitalize'>
                     {role} Interview
                 </h3>
@@ -42,6 +46,7 @@ const InterviewCard = ({interviewId,
 
                     <div className='flex flex-row gap-2 items-center'>
                         <Image src="/star.svg" alt="star" width={22} height={22}/>
+                        
 
                         <p>{feedback?.totalScore || '---'}/100</p>
                     </div>
@@ -56,8 +61,8 @@ const InterviewCard = ({interviewId,
                 <DisplayTechIcons techStack = {techstack} />
 
                 <Button className='btn-primary'>
-                    <Link href={feedback?`/interview/${interviewId}/feedback`
-                    : `/interview/${interviewId}`}>
+                    <Link href={feedback?`/interview/${id}/feedback`
+                    : `/interview/${id}`}>
                         {feedback ? 'Check Feedback': 'View Interview'}
                     </Link>
                 </Button>
