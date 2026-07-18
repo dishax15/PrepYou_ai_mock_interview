@@ -6,17 +6,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const page = async () => {
+const Home = async () => {
   const user = await getCurrentUser();
 
-  const [userInterviews, latestInterviews]=await Promise.all([
-    await getInterviewsByUserId(user?.id!),
-    await getLatestInterviews({ userId:user?.id! })
+  const [userInterviews, allInterviews]=await Promise.all([
+     getInterviewsByUserId(user?.id!),
+     getLatestInterviews({ userId:user?.id! })
   ]);
 
 
-  const hasPastInterview = userInterviews?.length! > 0;
-  const hasUpComingInterviews = latestInterviews?.length! > 0;
+  const hasPastInterviews = userInterviews?.length! > 0;
+  const hasUpComingInterviews = allInterviews?.length! > 0;
 
   return (
       <>
@@ -36,12 +36,13 @@ const page = async () => {
               className='max-sm:hidden'/>
         </section>
 
-        <section className='flex flex-col gap-5 mt-7'>
+        <section className='flex flex-col gap-6 mt-8'>
             <h2>Your Interviews</h2>
             <div className="interviews-section">
-              {hasPastInterview ? (
+              {hasPastInterviews ? (
                     userInterviews?.map((interview) => (
-                  <InterviewCard {...interview} key={interview.id} />
+                   <InterviewCard {... interview} 
+                      key={interview.id}/>
                     ))
                   ):(
                     <p>You haven&apos;t taken any interview yet</p>
@@ -50,12 +51,13 @@ const page = async () => {
             </div>
         </section>
 
-        <section className='flex flex-col gap-5 mt-7'>
+        <section className='flex flex-col gap-6 mt-8'>
           <h2>Take an interview</h2>
-          <div className='interview-section'>
+          <div className='interviews-section'>
           {hasUpComingInterviews ? (
-                    latestInterviews?.map((interview) => (
-                  <InterviewCard {...interview} key={interview.id} />
+                    allInterviews?.map((interview) => (
+                      <InterviewCard {... interview} 
+                      key={interview.id}/>
                     ))
                   ):(
                     <p>There are no new interview available</p>
@@ -63,9 +65,8 @@ const page = async () => {
               }
           </div>
         </section>
-
     </>
   )
 }
 
-export default page
+export default Home;

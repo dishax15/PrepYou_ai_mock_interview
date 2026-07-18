@@ -23,40 +23,30 @@ interface SavedMessage{
 }
 
 
-const Agent = ({ userName , userId , type , interviewId , questions} : AgentProps) => {
+const Agent = ({ userName , userId , type , interviewId , questions, feedbackId} : AgentProps) => {
     const router = useRouter();
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
     const [messages, setMessages] = useState<SavedMessage[]>([]);
+    // const [lastMessage, setLastMessage] = useState<string>("");
+
 
     useEffect(() => {
-      const onCallStart = () => {
-        setCallStatus(CallStatus.ACTIVE);
-      }
-      const onCallEnd = () => {
-        setCallStatus(CallStatus.INACTIVE);
-      }
-
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const onMessage = (message: any) => {
+      const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
+      const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
+      
+      const onMessage = (message: Message) => {
       if (message.type === "transcript" && message.transcriptType === "final") {
         const newMessage = { role: message.role, content: message.transcript };
+
         setMessages((prev) => [...prev, newMessage]);
       }
     };
 
-    const onSpeechStart = () => {
-      setIsSpeaking(true);
-    };
+    const onSpeechStart = () => setIsSpeaking(true);
+    const onSpeechEnd = () => setIsSpeaking(false);
 
-    const onSpeechEnd = () => {
-      setIsSpeaking(false);
-    };
-
-    const onError = (error: Error) => {
-      console.log("Error:", error);
-    };
+    const onError = (error: Error) => console.log("Error:", error);
 
     //Listeners
     vapi.on("call-start", onCallStart);
@@ -74,11 +64,10 @@ const Agent = ({ userName , userId , type , interviewId , questions} : AgentProp
       vapi.off("speech-end", onSpeechEnd);
       vapi.off("error", onError);
     };
-    }, [])
+}, [])
 
 
-    const handleGenerateFeedback = async(messages : 
-    SavedMessage[]) => {
+const handleGenerateFeedback = async(messages : SavedMessage[]) => {
       console.log('Generate feedback here.');
 
 //generate response and destructure it
@@ -86,20 +75,20 @@ const Agent = ({ userName , userId , type , interviewId , questions} : AgentProp
       const { success,feedbackId: id} = await createFeedback({
         interviewId:interviewId!,
         userId:userId!,
-        transcript:messages
-      })
-
+        transcript:messages,
+        feedbackId,
+      });
 
       if(success && id){
-        router.push(`/interview/${interviewId}/feedback`);
+        router.push(`/interview/${id}/feedback`);
       }else{
         console.log('Error saving feedback');
         router.push('/');
       }
-    }
+}
 
 
-    useEffect(() => {
+useEffect(() => {
         if(callStatus === CallStatus.FINISHED){
           if(type === 'generate'){
             router.push('/')
@@ -107,9 +96,10 @@ const Agent = ({ userName , userId , type , interviewId , questions} : AgentProp
             handleGenerateFeedback(messages);
           }
         }
-    }, [messages, callStatus, type, userId, router]);
+}, [messages, callStatus, router, type, userId]);
 
-    const handleCall = async() => {
+
+const handleCall = async() => {
       setCallStatus(CallStatus.CONNECTING);
 
       if(type === "generate"){
@@ -119,7 +109,6 @@ const Agent = ({ userName , userId , type , interviewId , questions} : AgentProp
           userid: userId,
         }
       })
-
     }else{
        let formattedQuestions = "";
       if (questions) {
@@ -127,21 +116,19 @@ const Agent = ({ userName , userId , type , interviewId , questions} : AgentProp
           .map((question) => `- ${question}`)
           .join("\n");
       }
-
       await vapi.start(interviewer, {
         variableValues: {
           questions: formattedQuestions,
         },
       });
     }
-  };
+};
 
 
-  
-    const handleDisconnect = async () =>{
-      setCallStatus(CallStatus.FINISHED);
-      vapi.stop();
-    }
+// const handleDisconnect = async () => {
+//       setCallStatus(CallStatus.FINISHED);
+//       await vapi.stop();
+//   }
 
     const latestMessage = messages[messages.length-1]?.content;
     const isCallInactiveOrFinished = callStatus === CallStatus.INACTIVE || callStatus===CallStatus.FINISHED;
@@ -197,12 +184,12 @@ const Agent = ({ userName , userId , type , interviewId , questions} : AgentProp
 
 
      <div className="w-full flex justify-center">
-        {callStatus !== "ACTIVE" ? (
-          <button className="relative btn-call"onClick={handleCall}>
+        {callStatus !== CallStatus.ACTIVE ? (
+          <button className="relative btn-call" onClick={handleCall}>
             <span
               className={cn(
                 "absolute animate-ping rounded-full opacity-75",
-                callStatus !== "CONNECTING" && "hidden"
+                callStatus !== CallStatus.CONNECTING && "hidden"
               )}
             />
 

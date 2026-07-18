@@ -28,8 +28,6 @@ export async function signUp(params : SignUpParams) {
             success: true,
             message: 'Account created successfully. Please sign in.'
         }
-
-     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error('Error creating a user', error);
@@ -67,7 +65,7 @@ export async function signIn(params : SignInParams){
 
         return{
             success: false,
-            message : 'Failed to log into an account.'
+            message : 'Failed to log into an account.Please try again.',
         };
     }
 
@@ -91,6 +89,13 @@ export async function setSessionCookie(idToken:string){
     });
 }
 
+// Sign out user by clearing the session cookie
+export async function signOut() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete("session");
+}
+
 // Get current user from session cookie
 export async function getCurrentUser(): Promise<User | null>{
     const cookieStore = await cookies();
@@ -102,7 +107,8 @@ export async function getCurrentUser(): Promise<User | null>{
         const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
         
         // get user info from db
-        const userRecord= await db.collection('users')
+        const userRecord= await 
+        db.collection('users')
         .doc(decodedClaims.uid)
         .get();
 
@@ -120,7 +126,7 @@ export async function getCurrentUser(): Promise<User | null>{
         return null;
     }
 }
-
+// Check if user is authenticated
 export async function isAuthenticated(){
     const user = await getCurrentUser();
 
