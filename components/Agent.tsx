@@ -70,17 +70,17 @@ const Agent = ({ userName , userId , type , interviewId , questions, feedbackId}
 const handleGenerateFeedback = async(messages : SavedMessage[]) => {
       console.log('Generate feedback here.');
 
-//generate response and destructure it
-// TODO:create a server action that geneates feedback
+   //generate response and destructure it
+   // TODO:create a server action that geneates feedback
       const { success,feedbackId: id} = await createFeedback({
-        interviewId:interviewId!,
+        interviewId:interviewId!,  
         userId:userId!,
         transcript:messages,
         feedbackId,
       });
 
       if(success && id){
-        router.push(`/interview/${id}/feedback`);
+        router.push(`/interview/${interviewId}/feedback`);
       }else{
         console.log('Error saving feedback');
         router.push('/');
@@ -125,18 +125,16 @@ const handleCall = async() => {
 };
 
 
-// const handleDisconnect = async () => {
-//       setCallStatus(CallStatus.FINISHED);
-//       await vapi.stop();
-//   }
+const handleDisconnect = async () => {
+      setCallStatus(CallStatus.FINISHED);
+      await vapi.stop();
+  }
 
     const latestMessage = messages[messages.length-1]?.content;
     const isCallInactiveOrFinished = callStatus === CallStatus.INACTIVE || callStatus===CallStatus.FINISHED;
 
      
-
-  return (
-
+return (
     <>
         <div className='call-view'>
         <div className='card-interviewer'>

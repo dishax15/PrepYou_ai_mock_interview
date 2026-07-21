@@ -4,15 +4,16 @@ import { getCurrentUser} from '@/lib/actions/auth.action'
 import { getInterviewsByUserId, getLatestInterviews } from '@/lib/actions/general.action'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 
 const Home = async () => {
   const user = await getCurrentUser();
+  console.log(user);//  
 
   const [userInterviews, allInterviews]=await Promise.all([
      getInterviewsByUserId(user?.id!),
      getLatestInterviews({ userId:user?.id! })
   ]);
+   console.log(user);
 
 
   const hasPastInterviews = userInterviews?.length! > 0;
@@ -29,7 +30,7 @@ const Home = async () => {
                   </Button>
             </div>
             <Image
-              src="/robot.png"
+              src="/roboooo.png"
               alt="Ai-robot"
               width={400} 
               height={400}

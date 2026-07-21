@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
 
 
-const page = async ({ params } : RouteParams) => {
+const Feedback = async ({ params } : RouteParams) => {
     const { id } = await params;
 
     const user = await getCurrentUser();
