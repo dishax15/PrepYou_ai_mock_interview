@@ -22,8 +22,11 @@ const InterviewCard =async ({id,userId,role,type,techstack,
       Technical: "bg-light-800",
     }[normalizedType] || "bg-light-600";
 
-    const formattedDate = 
-    dayjs(feedback?.createdAt || createdAt).format('MMM D,YYYY');
+    // const formattedDate = 
+    // dayjs(feedback?.createdAt || createdAt).format('MMM D,YYYY');
+     const formattedDate = feedback?.createdAt || createdAt
+  ? dayjs(feedback?.createdAt || createdAt).format('MMM D,YYYY')
+  : 'N/A';
 
 
   return (

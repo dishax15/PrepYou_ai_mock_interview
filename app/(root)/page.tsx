@@ -29,11 +29,11 @@ const Home = async () => {
                   </Button>
             </div>
             <Image
-              src="/roboooo.png"
+              src="/newrobo1.png"
               alt="Ai-robot"
               width={400} 
               height={400}
-              className='max-sm:hidden'/>
+              className='max-sm:hidden rounded-3xl'/>
         </section>
 
         <section className='flex flex-col gap-6 mt-8'>
