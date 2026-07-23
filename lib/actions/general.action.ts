@@ -119,16 +119,13 @@ export async function getLatestInterviews(
     // NOTE: You MUST create a composite index in the Firebase console for this exact query pattern.
     const interviews = await db
       .collection("interviews")
+      .orderBy("createdAt", "desc")
       .where("finalized", "==", true)
       .where("userId", "!=", userId)
-      .orderBy("userId") 
-      .orderBy("createdAt", "desc")
       .limit(limit)
       .get();
 
       console.log("Latest interviews:", interviews.size);//////
-
-
 
     return interviews.docs.map((doc) => ({
       id: doc.id,

@@ -15,7 +15,6 @@ const Home = async () => {
   ]);
    console.log(user);
 
-
   const hasPastInterviews = userInterviews?.length! > 0;
   const hasUpComingInterviews = allInterviews?.length! > 0;
 
@@ -43,7 +42,8 @@ const Home = async () => {
               {hasPastInterviews ? (
                     userInterviews?.map((interview) => (
                    <InterviewCard {... interview} 
-                      key={interview.id}/>
+                      key={interview.id}
+                      userId={user?.id} />
                     ))
                   ):(
                     <p>You haven&apos;t taken any interview yet</p>
@@ -58,7 +58,8 @@ const Home = async () => {
           {hasUpComingInterviews ? (
                     allInterviews?.map((interview) => (
                       <InterviewCard {... interview} 
-                      key={interview.id}/>
+                      key={interview.id}
+                      userId={user?.id} />
                     ))
                   ):(
                     <p>There are no new interview available</p>
