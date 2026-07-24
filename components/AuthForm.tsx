@@ -100,9 +100,9 @@ async function onSubmit(values : z.infer<typeof formSchema>) {
   return(
     <div className="card-border lg:min-w-141.5">
       <div className="flex flex-col gap-6 card py-14 px-10">
-        <div className="flex flex-row gap-2 justify-center">
-          <Image src="/logo.svg" alt="logo" height={32} width={38} />
-          <h2 className="text-primary-100">PrepYou</h2>
+        <div className="flex flex-row items-center justify-center">
+          <Image src="/Icon_Prepview.png" alt="logo" height={100} width={100} />
+          <h2 className="text-primary-200 text-5xl font-bold">PrepView</h2>
         </div>
 
         <h3>Practice job interviews with AI</h3>
@@ -140,7 +140,7 @@ async function onSubmit(values : z.infer<typeof formSchema>) {
             />
 
 
-            <Button className="btn" type="submit">
+            <Button className="btn " type="submit">
               {isSignIn ? "SignIn" : "Create an Account"}
             </Button>
           </form>

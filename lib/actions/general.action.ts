@@ -69,7 +69,7 @@ export async function getInterviewsByUserId(
   userId: string
 ): Promise<Interview[] | null> {
 
-console.log("Searching interviews for:", userId);
+// console.log("Searching interviews for:", userId);
 
   const interviews = await db
     .collection("interviews")
@@ -77,7 +77,7 @@ console.log("Searching interviews for:", userId);
     .orderBy("createdAt", "desc")
     .get();
 
-    console.log("Interview count:", interviews.size);//////
+    // console.log("Interview count:", interviews.size);//////
 
   return interviews.docs.map((doc) => ({
     id: doc.id,
@@ -125,7 +125,7 @@ export async function getLatestInterviews(
       .limit(limit)
       .get();
 
-      console.log("Latest interviews:", interviews.size);//////
+      // console.log("Latest interviews:", interviews.size);//////
 
     return interviews.docs.map((doc) => ({
       id: doc.id,

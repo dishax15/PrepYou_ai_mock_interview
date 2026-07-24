@@ -136,27 +136,31 @@ const handleDisconnect = async () => {
      
 return (
     <>
+        {/* {Interviewer card} */}
         <div className='call-view'>
         <div className='card-interviewer'>
-            <div className='avatar'>
-                <Image src="/ai-avatar.png" alt="vapi"
-                width={60} height={52} className="object-cover" />
+            <div className="relative">
+            {/* Layer 1: the cropped avatar circle */}
+                <div className='avatar overflow-hidden rounded-full'>
+                <Image src="/New_robo_prepview.png" alt="Interviewer"
+                  width={200} height={200} className="object-cover rounded-full w-full h-full scale-125" />
+                </div>
 
-                {isSpeaking && <span className='animate-speak'/>}
+        {/* Layer 2: the speaking ring, sits OUTSIDE the clipped div */}
+            {isSpeaking && (
+            <span className="absolute -inset-3 rounded-full animate-ping bg-primary-200/40" />
+                )}
             </div>
-            <h3>AI Interviewer</h3>
         </div>
 
         {/* User Profile Card */}
         <div className="card-border">
           <div className="card-content">
-            <Image
-              src="/profile.svg"
-              alt="profile-image"
-              width={60}
-              height={52}
-              className="rounded-full object-cover size-[120px]"
-            />
+            <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-br from-primary-200 to-primary-100 flex items-center justify-center">
+            <span className="text-5xl font-bold text-dark-100">
+             {userName?.charAt(0).toUpperCase()}
+            </span>
+            </div>
             <h3>{userName}</h3>
           </div>
         </div>
@@ -180,13 +184,12 @@ return (
       )}
 
 
-
      <div className="w-full flex justify-center">
         {callStatus !== CallStatus.ACTIVE ? (
           <button className="relative btn-call" onClick={handleCall}>
             <span
               className={cn(
-                "absolute animate-ping rounded-full opacity-75",
+                "absolute -inset-2 animate-ping rounded-full bg-primary-200/40 opacity-75",
                 callStatus !== CallStatus.CONNECTING && "hidden"
               )}
             />

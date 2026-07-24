@@ -32,7 +32,7 @@ const FormField = <T extends FieldValues>({
           <FormLabel className="label">{label}</FormLabel>
           <FormControl>
             <Input
-              className="input"
+              className="input hover:shadow-[0_0_12px_2px_rgba(167,139,250,0.25)] transition-shadow duration-300"
               type={type}
               placeholder={placeholder}
               {...field}

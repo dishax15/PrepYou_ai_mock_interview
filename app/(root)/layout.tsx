@@ -14,14 +14,14 @@ const RootLayout = async ({ children }: { children: ReactNode}) => {
   return (
     <div className="root-layout">
       <nav>
-        <Link href="/" className="flex items-center gap-1">
-          <Image src="/newlogo.png"
+        <Link href="/" className="flex items-center">
+          <Image src="/Icon_Prepview.png"
           alt="Logo"
-          width={100}
-          height={100}
+          width={110}
+          height={110}
           className="object-contain"/>
 
-          <h2 className="text-primary-200 text-5xl font-bold leading-none">
+          <h2 className="text-primary-200 text-5xl font-bold">
           PrepView
           </h2>
       </Link>
